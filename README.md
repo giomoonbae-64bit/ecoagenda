@@ -40,32 +40,3 @@ Este projeto foi construído utilizando tecnologias nativas do desenvolvimento w
 *   **JavaScript (ES6+)** para manipulação da DOM e lógica de regras de negócio.
 *   **Web Storage API (localStorage)** para persistência local dos dados, sem necessidade de banco de dados externo ou servidor.
 
----
-
-## 💻 Como Rodar o Projeto
-
-Como o EcoAgenda é uma aplicação 100% *client-side*, executá-la é muito simples:
-
-1.  Clone este repositório ou faça o download dos arquivos:
-    ```bash
-    git clone https://github.com/seu-usuario/ecoagenda.git
-    ```
-2.  Abra a pasta do projeto e dê um duplo clique no arquivo `index.html` para abrir diretamente no seu navegador padrão.
-
-*Opcional: Se preferir rodar a partir de um servidor local:*
-```bash
-# Usando Node.js
-npx serve
-
-# Ou usando Python
-python -m http.server 8000
-```
-Acesse `http://localhost:3000` (Node) ou `http://localhost:8000` (Python).
-
----
-
-## 🌎 Contribuição & Licença
-
-Sinta-se à vontade para abrir uma *Issue* ou enviar um *Pull Request* com novas ideias ou melhorias visuais. 
-
-Desenvolvido para ajudar a construir um futuro com menos desperdício de papel. 🌱
