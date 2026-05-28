@@ -33,6 +33,7 @@
         <a href="#agendar" class="nav-link" onclick="showSection('agendar')">Agendar</a>
         <a href="#admin" class="nav-link" onclick="showSection('admin')">Painel Admin</a>
         <a href="#bloqueios" class="nav-link" onclick="showSection('bloqueios')">Bloqueios</a>
+        <a href="#servicos" class="nav-link" onclick="showSection('servicos')">Serviços</a>
       </nav>
 
       <!-- Botão menu mobile -->
@@ -185,14 +186,6 @@
             </label>
             <select id="tipoServico" class="form-input form-select" required>
               <option value="">Selecione o serviço...</option>
-              <option value="Consulta Geral">Consulta Geral</option>
-              <option value="Retorno">Retorno</option>
-              <option value="Avaliação">Avaliação</option>
-              <option value="Procedimento">Procedimento</option>
-              <option value="Exame">Exame</option>
-              <option value="Reunião">Reunião</option>
-              <option value="Orientação">Orientação</option>
-              <option value="Outro">Outro</option>
             </select>
             <span class="form-error" id="erroServico"></span>
           </div>
@@ -403,6 +396,115 @@
   </section>
 
   <!-- =============================================
+       SEÇÃO 5: GERENCIAMENTO DE SERVIÇOS
+  ============================================== -->
+  <section class="section" id="servicos">
+    <div class="container page-header">
+      <div class="page-title-group">
+        <h1 class="page-title">💼 Gerenciar Serviços</h1>
+        <p class="page-subtitle">Configure e personalize os serviços oferecidos no agendamento</p>
+      </div>
+    </div>
+
+    <!-- Presets Rápidos -->
+    <div class="container">
+      <div class="card preset-card-selection">
+        <h3 class="card-title">⚡ Presets de Serviços por Setor</h3>
+        <p class="preset-desc">Escolha uma área de atuação para carregar instantaneamente serviços pré-definidos:</p>
+        
+        <div class="presets-grid">
+          <div class="preset-box" onclick="carregarPreset('geral', 'sobrescrever')">
+            <span class="preset-icon">🏢</span>
+            <h4>Geral / Escritório</h4>
+          </div>
+          <div class="preset-box" onclick="carregarPreset('saude', 'sobrescrever')">
+            <span class="preset-icon">🏥</span>
+            <h4>Saúde &amp; Bem-estar</h4>
+          </div>
+          <div class="preset-box" onclick="carregarPreset('beleza', 'sobrescrever')">
+            <span class="preset-icon">💅</span>
+            <h4>Estética &amp; Beleza</h4>
+          </div>
+          <div class="preset-box" onclick="carregarPreset('educacao', 'sobrescrever')">
+            <span class="preset-icon">🎓</span>
+            <h4>Educação / Aulas</h4>
+          </div>
+          <div class="preset-box" onclick="carregarPreset('tecnologia', 'sobrescrever')">
+            <span class="preset-icon">🛠️</span>
+            <h4>TI &amp; Assistência</h4>
+          </div>
+        </div>
+
+        <div class="preset-actions-row">
+          <span class="preset-info-note">💡 Dica: Ao clicar, você sobrescreve os serviços existentes. Se quiser apenas adicionar sem apagar, use os botões abaixo:</span>
+          <div class="preset-append-buttons">
+            <button class="btn btn-sm btn-outline" onclick="carregarPreset('geral', 'adicionar')">+ Geral</button>
+            <button class="btn btn-sm btn-outline" onclick="carregarPreset('saude', 'adicionar')">+ Saúde</button>
+            <button class="btn btn-sm btn-outline" onclick="carregarPreset('beleza', 'adicionar')">+ Beleza</button>
+            <button class="btn btn-sm btn-outline" onclick="carregarPreset('educacao', 'adicionar')">+ Educação</button>
+            <button class="btn btn-sm btn-outline" onclick="carregarPreset('tecnologia', 'adicionar')">+ TI</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container servico-layout">
+      <!-- Formulário de cadastro de serviço -->
+      <div class="card servico-form-card">
+        <h2 class="card-title">Cadastrar / Editar Serviço</h2>
+
+        <input type="hidden" id="editandoServicoId" value="" />
+
+        <div class="form-group">
+          <label for="nomeServico" class="form-label">
+            👤 Nome do serviço <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="nomeServico"
+            class="form-input"
+            placeholder="Ex: Consultoria Avançada, Corte de Cabelo"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="descricaoServico" class="form-label">📝 Descrição / Detalhes (opcional)</label>
+          <input
+            type="text"
+            id="descricaoServico"
+            class="form-input"
+            placeholder="Ex: Sessão individual com duração de 1 hora..."
+          />
+        </div>
+
+        <div class="servico-form-actions">
+          <button class="btn btn-primary btn-block" id="btnSalvarServico" onclick="salvarServico()">
+            <span>➕</span> Adicionar serviço
+          </button>
+          <button class="btn btn-outline btn-block" onclick="limparFormularioServico()">
+            <span>🔄</span> Limpar / Novo
+          </button>
+        </div>
+      </div>
+
+      <!-- Lista de serviços cadastrados -->
+      <div class="servico-list-area">
+        <h2 class="card-title">Serviços Cadastrados</h2>
+
+        <div id="listaServicos">
+          <!-- Gerado dinamicamente -->
+        </div>
+
+        <div class="empty-state small-empty" id="emptyServicos" style="display:none;">
+          <div class="empty-icon">📂</div>
+          <p>Nenhum serviço cadastrado no momento. Cadastre acima ou carregue um preset.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
        MODAL DE EDIÇÃO DE AGENDAMENTO
   ============================================== -->
   <div class="modal-overlay" id="modalOverlay" onclick="fecharModal()" style="display:none;">
@@ -424,14 +526,7 @@
         <div class="form-group">
           <label for="editServico" class="form-label">🛠️ Serviço</label>
           <select id="editServico" class="form-input form-select">
-            <option value="Consulta Geral">Consulta Geral</option>
-            <option value="Retorno">Retorno</option>
-            <option value="Avaliação">Avaliação</option>
-            <option value="Procedimento">Procedimento</option>
-            <option value="Exame">Exame</option>
-            <option value="Reunião">Reunião</option>
-            <option value="Orientação">Orientação</option>
-            <option value="Outro">Outro</option>
+            <option value="">Selecione o serviço...</option>
           </select>
         </div>
         <div class="form-group">

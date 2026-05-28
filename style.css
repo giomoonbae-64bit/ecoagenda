@@ -1005,3 +1005,173 @@ body {
   opacity: 0.6;
 }
 
+/* ==========================================================================
+   15. SEÇÃO DE GERENCIAMENTO DE SERVIÇOS
+   ========================================================================== */
+.preset-card-selection {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px 32px;
+  margin-bottom: 30px;
+}
+
+.preset-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.presets-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.preset-box {
+  background-color: #fafbfa;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.preset-box:hover {
+  background-color: rgba(46, 125, 50, 0.05);
+  border-color: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+}
+
+.preset-icon {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.preset-box h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.preset-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+}
+
+.preset-info-note {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 60%;
+}
+
+.preset-append-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-append-buttons .btn {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+/* Layout de Serviços */
+.servico-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 32px;
+}
+
+.servico-form-card {
+  height: fit-content;
+}
+
+.servico-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.servico-list-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.servico-item {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-sm);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.servico-item:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+.servico-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.servico-info p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.servico-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.toast.toast-info {
+  border-left-color: var(--accent);
+}
+
+/* Responsividade de Serviços */
+@media (max-width: 992px) {
+  .servico-layout {
+    grid-template-columns: 1fr;
+  }
+  .presets-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .presets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .preset-info-note {
+    max-width: 100%;
+  }
+  .servico-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .servico-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+

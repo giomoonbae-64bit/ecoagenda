@@ -12,9 +12,47 @@ const HORARIOS_DISPONIVEIS = [
   "17:00", "17:30"
 ];
 
+// PRESETS DE SERVIÇOS PARA DIFERENTES SETORES
+const PRESETS_SERVICOS = {
+  geral: [
+    { id: "s1", nome: "Consultoria", descricao: "Reunião de consultoria e orientação estratégica." },
+    { id: "s2", nome: "Suporte Técnico", descricao: "Atendimento técnico para resolução de problemas." },
+    { id: "s3", nome: "Aula / Treinamento", descricao: "Sessão individual ou coletiva de aprendizado." },
+    { id: "s4", nome: "Atendimento Geral", descricao: "Atendimento comercial ou dúvidas gerais." },
+    { id: "s5", nome: "Reunião", descricao: "Alinhamentos de projetos ou apresentação comercial." }
+  ],
+  saude: [
+    { id: "s_md1", nome: "Consulta Geral", descricao: "Avaliação inicial de saúde e diagnóstico geral." },
+    { id: "s_md2", nome: "Retorno", descricao: "Consulta de acompanhamento após exames ou tratamentos." },
+    { id: "s_md3", nome: "Avaliação", descricao: "Exame clínico detalhado para início de terapia." },
+    { id: "s_md4", nome: "Procedimento", descricao: "Tratamento clínico ambulatorial específico." },
+    { id: "s_md5", nome: "Exame", descricao: "Coleta de material ou realização de exames diagnósticos." }
+  ],
+  beleza: [
+    { id: "s_bl1", nome: "Corte de Cabelo", descricao: "Corte de cabelo e lavagem completa." },
+    { id: "s_bl2", nome: "Manicure / Pedicure", descricao: "Tratamento e esmaltação de unhas das mãos e pés." },
+    { id: "s_bl3", nome: "Design de Sobrancelhas", descricao: "Modelagem de sobrancelhas com pinça ou cera." },
+    { id: "s_bl4", nome: "Limpeza de Pele", descricao: "Higienização profunda e remoção de impurezas da pele." },
+    { id: "s_bl5", nome: "Massagem", descricao: "Sessão de massagem relaxante corporal." }
+  ],
+  educacao: [
+    { id: "s_ed1", nome: "Aula Particular", descricao: "Instrução escolar ou acadêmica individualizada." },
+    { id: "s_ed2", nome: "Mentoria", descricao: "Orientação e aconselhamento profissional/acadêmico." },
+    { id: "s_ed3", nome: "Tutoria / Monitoria", descricao: "Resolução de dúvidas de disciplinas específicas." },
+    { id: "s_ed4", nome: "Workshop / Treinamento", descricao: "Sessão prática em grupo para capacitação." }
+  ],
+  tecnologia: [
+    { id: "s_tec1", nome: "Assistência Técnica", descricao: "Manutenção física ou lógica de computadores e periféricos." },
+    { id: "s_tec2", nome: "Instalação / Configuração", descricao: "Configuração de softwares, roteadores e serviços online." },
+    { id: "s_tec3", nome: "Visita Técnica", descricao: "Visita ao local para diagnóstico e orçamento sem compromisso." },
+    { id: "s_tec4", nome: "Manutenção Preventiva", descricao: "Limpeza preventiva de hardware ou backup de segurança." }
+  ]
+};
+
 // VARIÁVEIS DE ESTADO GLOBAL
 let agendamentos = [];
 let datasBloqueadas = [];
+let servicos = [];
 
 // INICIALIZAÇÃO DA APLICAÇÃO
 document.addEventListener("DOMContentLoaded", () => {
@@ -28,10 +66,12 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarEstatisticas();
   renderizarAgendamentos();
   renderizarBloqueios();
+  renderizarServicos();
+  carregarServicosNosFormularios();
 
   // Monitorar hash na URL para navegação direta caso ocorra
   const hash = window.location.hash.replace("#", "");
-  if (hash && ["home", "agendar", "admin", "bloqueios"].includes(hash)) {
+  if (hash && ["home", "agendar", "admin", "bloqueios", "servicos"].includes(hash)) {
     showSection(hash);
   }
 });
@@ -43,14 +83,23 @@ document.addEventListener("DOMContentLoaded", () => {
 function carregarDados() {
   const agendamentosSalvos = localStorage.getItem("ecoagenda_agendamentos");
   const bloqueiosSalvos = localStorage.getItem("ecoagenda_bloqueios");
+  const servicosSalvos = localStorage.getItem("ecoagenda_servicos");
 
   agendamentos = agendamentosSalvos ? JSON.parse(agendamentosSalvos) : [];
   datasBloqueadas = bloqueiosSalvos ? JSON.parse(bloqueiosSalvos) : [];
+  
+  if (servicosSalvos) {
+    servicos = JSON.parse(servicosSalvos);
+  } else {
+    servicos = JSON.parse(JSON.stringify(PRESETS_SERVICOS.geral));
+    localStorage.setItem("ecoagenda_servicos", JSON.stringify(servicos));
+  }
 }
 
 function salvarDados() {
   localStorage.setItem("ecoagenda_agendamentos", JSON.stringify(agendamentos));
   localStorage.setItem("ecoagenda_bloqueios", JSON.stringify(datasBloqueadas));
+  localStorage.setItem("ecoagenda_servicos", JSON.stringify(servicos));
 
   // Atualizar a interface do usuário após modificações nos dados
   atualizarEstatisticas();
@@ -677,6 +726,7 @@ function showToast(mensagem, tipo = "success") {
   if (tipo === "success") icone = "🌿";
   if (tipo === "danger") icone = "⚠️";
   if (tipo === "warning") icone = "🗑️";
+  if (tipo === "info") icone = "ℹ️";
 
   toast.innerHTML = `<span>${icone}</span> <span>${mensagem}</span>`;
 
@@ -708,4 +758,205 @@ function escapeHTML(str) {
     "'": '&#39;',
     '"': '&quot;'
   }[tag] || tag));
+}
+
+// ==========================================
+// 12. GERENCIAMENTO DE SERVIÇOS
+// ==========================================
+
+function carregarServicosNosFormularios() {
+  const selectAgendar = document.getElementById("tipoServico");
+  const selectModal = document.getElementById("editServico");
+
+  if (selectAgendar) {
+    const valAnterior = selectAgendar.value;
+    selectAgendar.innerHTML = '<option value="">Selecione o serviço...</option>';
+    servicos.forEach(s => {
+      const option = document.createElement("option");
+      option.value = s.nome;
+      option.textContent = s.nome;
+      selectAgendar.appendChild(option);
+    });
+    if (servicos.some(s => s.nome === valAnterior)) {
+      selectAgendar.value = valAnterior;
+    }
+  }
+
+  if (selectModal) {
+    const valAnterior = selectModal.value;
+    selectModal.innerHTML = '<option value="">Selecione o serviço...</option>';
+    servicos.forEach(s => {
+      const option = document.createElement("option");
+      option.value = s.nome;
+      option.textContent = s.nome;
+      selectModal.appendChild(option);
+    });
+    if (servicos.some(s => s.nome === valAnterior)) {
+      selectModal.value = valAnterior;
+    }
+  }
+}
+
+function renderizarServicos() {
+  const container = document.getElementById("listaServicos");
+  const emptyState = document.getElementById("emptyServicos");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (servicos.length === 0) {
+    if (emptyState) emptyState.style.display = "block";
+    return;
+  }
+
+  if (emptyState) emptyState.style.display = "none";
+
+  servicos.forEach(s => {
+    const item = document.createElement("div");
+    item.className = "servico-item";
+
+    item.innerHTML = `
+      <div class="servico-info">
+        <h4>💼 ${escapeHTML(s.nome)}</h4>
+        <p>${escapeHTML(s.descricao || "Sem descrição cadastrada")}</p>
+      </div>
+      <div class="servico-actions">
+        <button class="btn btn-sm btn-outline" onclick="abrirEdicaoServico('${s.id}')" title="Editar">
+          Editar
+        </button>
+        <button class="btn btn-sm btn-outline btn-danger" onclick="excluirServico('${s.id}')" title="Excluir">
+          Excluir
+        </button>
+      </div>
+    `;
+
+    container.appendChild(item);
+  });
+}
+
+function salvarServico() {
+  const inputNome = document.getElementById("nomeServico");
+  const inputDescricao = document.getElementById("descricaoServico");
+  const inputId = document.getElementById("editandoServicoId");
+
+  if (!inputNome || !inputNome.value.trim()) {
+    showToast("Por favor, preencha o nome do serviço.", "danger");
+    return;
+  }
+
+  const nome = inputNome.value.trim();
+  const descricao = inputDescricao.value.trim();
+  const id = inputId.value;
+
+  const duplicado = servicos.some(s => s.nome.toLowerCase() === nome.toLowerCase() && s.id !== id);
+  if (duplicado) {
+    showToast("Já existe um serviço cadastrado com este nome.", "danger");
+    return;
+  }
+
+  if (id) {
+    const index = servicos.findIndex(s => s.id === id);
+    if (index !== -1) {
+      servicos[index].nome = nome;
+      servicos[index].descricao = descricao;
+      showToast("Serviço atualizado com sucesso!", "success");
+    }
+  } else {
+    const novoServico = {
+      id: generateId(),
+      nome: nome,
+      descricao: descricao
+    };
+    servicos.push(novoServico);
+    showToast("Serviço adicionado com sucesso!", "success");
+  }
+
+  salvarDados();
+  renderizarServicos();
+  carregarServicosNosFormularios();
+  limparFormularioServico();
+}
+
+function abrirEdicaoServico(id) {
+  const s = servicos.find(item => item.id === id);
+  if (!s) return;
+
+  document.getElementById("editandoServicoId").value = s.id;
+  document.getElementById("nomeServico").value = s.nome;
+  document.getElementById("descricaoServico").value = s.descricao || "";
+
+  const btn = document.getElementById("btnSalvarServico");
+  if (btn) {
+    btn.innerHTML = "<span>💾</span> Salvar alterações";
+  }
+}
+
+function limparFormularioServico() {
+  document.getElementById("nomeServico").value = "";
+  document.getElementById("descricaoServico").value = "";
+  document.getElementById("editandoServicoId").value = "";
+
+  const btn = document.getElementById("btnSalvarServico");
+  if (btn) {
+    btn.innerHTML = "<span>➕</span> Adicionar serviço";
+  }
+}
+
+function excluirServico(id) {
+  const s = servicos.find(item => item.id === id);
+  if (!s) return;
+
+  const emUso = agendamentos.some(a => a.servico === s.nome);
+  let msg = "Tem certeza que deseja excluir este serviço?";
+  if (emUso) {
+    msg = `⚠️ Este serviço está sendo usado em agendamentos existentes.\nExcluí-lo impedirá novos agendamentos para este serviço, mas não afetará os existentes.\nDeseja mesmo continuar?`;
+  }
+
+  if (confirm(msg)) {
+    servicos = servicos.filter(item => item.id !== id);
+    salvarDados();
+    renderizarServicos();
+    carregarServicosNosFormularios();
+    showToast("Serviço excluído com sucesso.", "warning");
+    
+    if (document.getElementById("editandoServicoId").value === id) {
+      limparFormularioServico();
+    }
+  }
+}
+
+function carregarPreset(area, acao) {
+  const preset = PRESETS_SERVICOS[area];
+  if (!preset) return;
+
+  if (acao === "sobrescrever") {
+    if (confirm("⚠️ Isso irá apagar todos os serviços atuais e substituí-los pelo preset selecionado. Deseja continuar?")) {
+      servicos = JSON.parse(JSON.stringify(preset));
+      showToast("Preset carregado com sucesso!", "success");
+    } else {
+      return;
+    }
+  } else {
+    let adicionadosCount = 0;
+    preset.forEach(p => {
+      if (!servicos.some(s => s.nome.toLowerCase() === p.nome.toLowerCase())) {
+        servicos.push({
+          id: generateId(),
+          nome: p.nome,
+          descricao: p.descricao
+        });
+        adicionadosCount++;
+      }
+    });
+    if (adicionadosCount > 0) {
+      showToast(`${adicionadosCount} novos serviços adicionados do preset!`, "success");
+    } else {
+      showToast("Todos os serviços do preset já estavam cadastrados.", "info");
+    }
+  }
+
+  salvarDados();
+  renderizarServicos();
+  carregarServicosNosFormularios();
 }
