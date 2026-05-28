@@ -1125,3 +1125,55 @@ body {
     gap: 12px;
   }
 }
+
+/* =============================================
+   20. CARD DE ENGENHARIA DE PROMPT
+============================================== */
+.prompt-card {
+  border-left: 6px solid var(--accent);
+  background: linear-gradient(135deg, var(--surface) 0%, hsl(136, 15%, 98%) 100%);
+  padding: 40px;
+}
+
+.prompt-badge {
+  background-color: var(--accent-light);
+  color: var(--primary);
+  padding: 6px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.prompt-intro {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.prompt-example-box {
+  background-color: hsl(136, 15%, 95%);
+  border: 1px dashed var(--border);
+  border-radius: var(--border-radius-sm);
+  padding: 24px;
+}
+
+.prompt-box-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-light);
+  margin-bottom: 12px;
+}
+
+.prompt-quote {
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.6;
+  border-left: 4px solid var(--primary);
+  padding-left: 20px;
+  margin: 0;
+}

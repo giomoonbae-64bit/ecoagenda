@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Monitorar hash na URL para navegação direta caso ocorra
   const hash = window.location.hash.replace("#", "");
-  if (hash && ["home", "agendar", "admin", "bloqueios", "servicos"].includes(hash)) {
+  if (hash && ["home", "agendar", "admin", "bloqueios", "servicos", "prompt"].includes(hash)) {
     showSection(hash);
   }
 });
@@ -781,15 +781,19 @@ function carregarHorariosModal(horarioSelecionado = "") {
 
   const horariosDisponiveis = HORARIOS_DISPONIVEIS.filter(h => !horariosOcupados.includes(h) || h === horarioSelecionado);
 
-  horariosDisponiveis.forEach(h => {
-    const option = document.createElement("option");
-    option.value = h;
-    option.textContent = h;
-    if (h === horarioSelecionado) {
-      option.selected = true;
-    }
-    selectHorario.appendChild(option);
-  });
+  if (horariosDisponiveis.length === 0) {
+    selectHorario.innerHTML = '<option value="">Nenhum horário disponível para esta data</option>';
+  } else {
+    horariosDisponiveis.forEach(h => {
+      const option = document.createElement("option");
+      option.value = h;
+      option.textContent = h;
+      if (h === horarioSelecionado) {
+        option.selected = true;
+      }
+      selectHorario.appendChild(option);
+    });
+  }
 }
 
 function salvarEdicao() {
