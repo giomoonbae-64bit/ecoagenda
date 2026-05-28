@@ -1,6 +1,6 @@
 /**
  * ==========================================================================
- * EcoAgenda - Código de Lógica JavaScript (LocalStorage, Agendamentos, Bloqueios)
+ * EcoAgenda - Lógica JavaScript Reconstruída e Multi-Setorial
  * ==========================================================================
  */
 
@@ -12,47 +12,66 @@ const HORARIOS_DISPONIVEIS = [
   "17:00", "17:30"
 ];
 
-// PRESETS DE SERVIÇOS PARA DIFERENTES SETORES
-const PRESETS_SERVICOS = {
-  geral: [
-    { id: "s1", nome: "Consultoria", descricao: "Reunião de consultoria e orientação estratégica." },
-    { id: "s2", nome: "Suporte Técnico", descricao: "Atendimento técnico para resolução de problemas." },
-    { id: "s3", nome: "Aula / Treinamento", descricao: "Sessão individual ou coletiva de aprendizado." },
-    { id: "s4", nome: "Atendimento Geral", descricao: "Atendimento comercial ou dúvidas gerais." },
-    { id: "s5", nome: "Reunião", descricao: "Alinhamentos de projetos ou apresentação comercial." }
-  ],
-  saude: [
-    { id: "s_md1", nome: "Consulta Geral", descricao: "Avaliação inicial de saúde e diagnóstico geral." },
-    { id: "s_md2", nome: "Retorno", descricao: "Consulta de acompanhamento após exames ou tratamentos." },
-    { id: "s_md3", nome: "Avaliação", descricao: "Exame clínico detalhado para início de terapia." },
-    { id: "s_md4", nome: "Procedimento", descricao: "Tratamento clínico ambulatorial específico." },
-    { id: "s_md5", nome: "Exame", descricao: "Coleta de material ou realização de exames diagnósticos." }
-  ],
-  beleza: [
-    { id: "s_bl1", nome: "Corte de Cabelo", descricao: "Corte de cabelo e lavagem completa." },
-    { id: "s_bl2", nome: "Manicure / Pedicure", descricao: "Tratamento e esmaltação de unhas das mãos e pés." },
-    { id: "s_bl3", nome: "Design de Sobrancelhas", descricao: "Modelagem de sobrancelhas com pinça ou cera." },
-    { id: "s_bl4", nome: "Limpeza de Pele", descricao: "Higienização profunda e remoção de impurezas da pele." },
-    { id: "s_bl5", nome: "Massagem", descricao: "Sessão de massagem relaxante corporal." }
-  ],
-  educacao: [
-    { id: "s_ed1", nome: "Aula Particular", descricao: "Instrução escolar ou acadêmica individualizada." },
-    { id: "s_ed2", nome: "Mentoria", descricao: "Orientação e aconselhamento profissional/acadêmico." },
-    { id: "s_ed3", nome: "Tutoria / Monitoria", descricao: "Resolução de dúvidas de disciplinas específicas." },
-    { id: "s_ed4", nome: "Workshop / Treinamento", descricao: "Sessão prática em grupo para capacitação." }
-  ],
-  tecnologia: [
-    { id: "s_tec1", nome: "Assistência Técnica", descricao: "Manutenção física ou lógica de computadores e periféricos." },
-    { id: "s_tec2", nome: "Instalação / Configuração", descricao: "Configuração de softwares, roteadores e serviços online." },
-    { id: "s_tec3", nome: "Visita Técnica", descricao: "Visita ao local para diagnóstico e orçamento sem compromisso." },
-    { id: "s_tec4", nome: "Manutenção Preventiva", descricao: "Limpeza preventiva de hardware ou backup de segurança." }
-  ]
-};
+// ESTRUTURAS DE PRESET DE INICIALIZAÇÃO (FÁBRICA)
+const CATEGORIAS_PADRAO = [
+  { id: "c_beleza", nome: "Estética & Beleza", icone: "💇" },
+  { id: "c_educacao", nome: "Aulas & Educação", icone: "🎓" },
+  { id: "c_saude", nome: "Saúde & Bem-estar", icone: "🏥" },
+  { id: "c_tecnologia", nome: "TI & Assistência", icone: "🛠️" },
+  { id: "c_negocios", nome: "Consultoria & Negócios", icone: "🏢" }
+];
+
+const SERVICOS_PADRAO = [
+  // Beleza
+  { id: "sb1", categoriaId: "c_beleza", nome: "Corte de Cabelo", descricao: "Corte masculino ou feminino e lavagem inclusa." },
+  { id: "sb2", categoriaId: "c_beleza", nome: "Manicure & Pedicure", descricao: "Tratamento completo e esmaltação profissional." },
+  { id: "sb3", categoriaId: "c_beleza", nome: "Design de Sobrancelhas", descricao: "Modelagem e limpeza estética facial." },
+  { id: "sb4", categoriaId: "c_beleza", nome: "Limpeza de Pele", descricao: "Higienização facial profunda para remoção de cravos." },
+  { id: "sb5", categoriaId: "c_beleza", nome: "Massagem Relaxante", descricao: "Sessão de massagem corporal antiestresse de 1 hora." },
+  { id: "sb6", categoriaId: "c_beleza", nome: "Barba & Barboterapia", descricao: "Corte de barba com navalha e hidratação com toalha quente." },
+  { id: "sb7", categoriaId: "c_beleza", nome: "Maquiagem Profissional", descricao: "Maquiagem de festa, social ou para sessões de fotos." },
+  { id: "sb8", categoriaId: "c_beleza", nome: "Depilação Geral", descricao: "Depilação com cera quente descartável natural." },
+
+  // Educação
+  { id: "se1", categoriaId: "c_educacao", nome: "Aula Particular de Reforço", descricao: "Apoio escolar e explicação de conteúdo individualizada." },
+  { id: "se2", categoriaId: "c_educacao", nome: "Mentoria de Carreira", descricao: "Planejamento profissional, revisão de currículo e portfólio." },
+  { id: "se3", categoriaId: "c_educacao", nome: "Conversação em Idiomas", descricao: "Prática oral intensiva em inglês ou espanhol." },
+  { id: "se4", categoriaId: "c_educacao", nome: "Preparatório para Concursos", descricao: "Resolução de questões e dicas de provas específicas." },
+  { id: "se5", categoriaId: "c_educacao", nome: "Workshop de Tecnologia", descricao: "Introdução prática a ferramentas digitais essenciais." },
+  { id: "se6", categoriaId: "c_educacao", nome: "Orientação Acadêmica (TCC)", descricao: "Auxílio na estruturação de monografias e relatórios." },
+
+  // Saúde
+  { id: "ss1", categoriaId: "c_saude", nome: "Consulta Médica Geral", descricao: "Consulta de rotina com médico geral para check-ups." },
+  { id: "ss2", categoriaId: "c_saude", nome: "Retorno Clínico", descricao: "Análise de exames solicitados anteriormente." },
+  { id: "ss3", categoriaId: "c_saude", nome: "Avaliação Nutricional", descricao: "Medição corporal e elaboração de cardápio saudável." },
+  { id: "ss4", categoriaId: "c_saude", nome: "Reabilitação Fisioterapêutica", descricao: "Tratamento de dores articulares e musculares." },
+  { id: "ss5", categoriaId: "c_saude", nome: "Sessão de Psicoterapia", descricao: "Atendimento terapêutico para cuidado com a saúde mental." },
+  { id: "ss6", categoriaId: "c_saude", nome: "Sessão de Pilates Clínico", descricao: "Exercícios guiados de flexibilidade e postura." },
+  { id: "ss7", categoriaId: "c_saude", nome: "Exame e Coleta Rápida", descricao: "Coleta laboratorial para exames rápidos agendados." },
+
+  // TI
+  { id: "st1", categoriaId: "c_tecnologia", nome: "Manutenção de Computador", descricao: "Conserto de peças, upgrade de SSD ou memória." },
+  { id: "st2", categoriaId: "c_tecnologia", nome: "Formatação & Backup", descricao: "Limpeza de sistema e reinstalação segura do Windows/Mac." },
+  { id: "st3", categoriaId: "c_tecnologia", nome: "Instalação de Redes e Wi-Fi", descricao: "Configuração de roteadores e repetidores de sinal." },
+  { id: "st4", categoriaId: "c_tecnologia", nome: "Limpeza Interna e Pasta Térmica", descricao: "Manutenção física preventiva contra superaquecimento." },
+  { id: "st5", categoriaId: "c_tecnologia", nome: "Recuperação de Arquivos", descricao: "Recuperação de dados deletados ou HDs danificados." },
+  { id: "st6", categoriaId: "c_tecnologia", nome: "Visita Técnica e Orçamento", descricao: "Avaliação técnica local para orçamentos de redes ou CFTV." },
+
+  // Negócios
+  { id: "sn1", categoriaId: "c_negocios", nome: "Consultoria Financeira", descricao: "Análise de gastos e planejamento de orçamento pessoal ou MEI." },
+  { id: "sn2", categoriaId: "c_negocios", nome: "Assessoria Jurídica Inicial", descricao: "Esclarecimento de dúvidas sobre contratos ou processos básicos." },
+  { id: "sn3", categoriaId: "c_negocios", nome: "Sessão de Coaching e Foco", descricao: "Desenvolvimento de metas, hábitos e produtividade." },
+  { id: "sn4", categoriaId: "c_negocios", nome: "Reunião de Alinhamento de Projetos", descricao: "Reunião comercial ou de andamento de demandas em andamento." },
+  { id: "sn5", categoriaId: "c_negocios", nome: "Briefing e Criação de Escopo", descricao: "Levantamento detalhado para novos projetos e orçamentos." },
+  { id: "sn6", categoriaId: "c_negocios", nome: "Mentoria de Novos Negócios", descricao: "Validação de ideias de negócios e primeiros passos de mercado." }
+];
 
 // VARIÁVEIS DE ESTADO GLOBAL
 let agendamentos = [];
 let datasBloqueadas = [];
+let categorias = [];
 let servicos = [];
+let categoriaSelecionadaAgendar = "";
 
 // INICIALIZAÇÃO DA APLICAÇÃO
 document.addEventListener("DOMContentLoaded", () => {
@@ -66,8 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarEstatisticas();
   renderizarAgendamentos();
   renderizarBloqueios();
-  renderizarServicos();
-  carregarServicosNosFormularios();
+  renderizarCategoriasHome();
+  renderizarCategoriasAgendar();
+  renderizarCategoriasAdmin();
+  renderizarServicosAdmin();
 
   // Monitorar hash na URL para navegação direta caso ocorra
   const hash = window.location.hash.replace("#", "");
@@ -83,15 +104,23 @@ document.addEventListener("DOMContentLoaded", () => {
 function carregarDados() {
   const agendamentosSalvos = localStorage.getItem("ecoagenda_agendamentos");
   const bloqueiosSalvos = localStorage.getItem("ecoagenda_bloqueios");
+  const categoriasSalvas = localStorage.getItem("ecoagenda_categorias");
   const servicosSalvos = localStorage.getItem("ecoagenda_servicos");
 
   agendamentos = agendamentosSalvos ? JSON.parse(agendamentosSalvos) : [];
   datasBloqueadas = bloqueiosSalvos ? JSON.parse(bloqueiosSalvos) : [];
   
+  if (categoriasSalvas) {
+    categorias = JSON.parse(categoriasSalvas);
+  } else {
+    categorias = [...CATEGORIAS_PADRAO];
+    localStorage.setItem("ecoagenda_categorias", JSON.stringify(categorias));
+  }
+
   if (servicosSalvos) {
     servicos = JSON.parse(servicosSalvos);
   } else {
-    servicos = JSON.parse(JSON.stringify(PRESETS_SERVICOS.geral));
+    servicos = [...SERVICOS_PADRAO];
     localStorage.setItem("ecoagenda_servicos", JSON.stringify(servicos));
   }
 }
@@ -99,10 +128,34 @@ function carregarDados() {
 function salvarDados() {
   localStorage.setItem("ecoagenda_agendamentos", JSON.stringify(agendamentos));
   localStorage.setItem("ecoagenda_bloqueios", JSON.stringify(datasBloqueadas));
+  localStorage.setItem("ecoagenda_categorias", JSON.stringify(categorias));
   localStorage.setItem("ecoagenda_servicos", JSON.stringify(servicos));
 
   // Atualizar a interface do usuário após modificações nos dados
   atualizarEstatisticas();
+}
+
+// Resetar configurações de fábrica (Todos os presets)
+function resetarPresetsFabrica() {
+  if (confirm("⚠️ Tem certeza de que deseja apagar todos os serviços e categorias personalizadas e restaurar as opções de fábrica? Todos os agendamentos e bloqueios existentes serão mantidos.")) {
+    categorias = [...CATEGORIAS_PADRAO];
+    servicos = [...SERVICOS_PADRAO];
+    salvarDados();
+    
+    // Atualizar UI
+    renderizarCategoriasHome();
+    renderizarCategoriasAgendar();
+    renderizarCategoriasAdmin();
+    renderizarServicosAdmin();
+    
+    // Resetar campos de agendamento ativos
+    categoriaSelecionadaAgendar = "";
+    document.querySelectorAll(".category-card-btn").forEach(btn => btn.classList.remove("active"));
+    const selectServico = document.getElementById("tipoServico");
+    if (selectServico) selectServico.innerHTML = '<option value="">Selecione uma categoria acima...</option>';
+
+    showToast("Configurações originais de fábrica restauradas!", "success");
+  }
 }
 
 // ==========================================
@@ -143,7 +196,6 @@ function toggleMenu() {
   nav.classList.toggle("mobile-active");
 }
 
-// Configurar data mínima (hoje) para os inputs de data
 function configurarLimitesDeData() {
   const localDate = new Date();
   const offset = localDate.getTimezoneOffset();
@@ -169,7 +221,6 @@ function atualizarEstatisticas() {
   // Cada agendamento digital economiza:
   // - 1 folha de papel A4 física
   // - 10 litros de água (usados no processamento e produção de papel)
-  // - 0.0001 de árvore preservada
   const folhasEconomizadas = totalAgendamentos;
   const aguaPreservada = totalAgendamentos * 10;
 
@@ -260,7 +311,102 @@ function carregarHorariosDisponiveis() {
 }
 
 // ==========================================
-// 6. CRIAÇÃO DE NOVO AGENDAMENTO
+// 6. JORNADA DO CLIENTE: SELEÇÃO DE CATEGORIAS E SERVIÇOS
+// ==========================================
+
+// Renderiza os atalhos de categoria na Home
+function renderizarCategoriasHome() {
+  const container = document.getElementById("gridCategoriasHome");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  categorias.forEach(cat => {
+    const card = document.createElement("div");
+    card.className = "category-shortcut-card";
+    card.onclick = () => selecionarSetorEAgendar(cat.id);
+
+    // Contar serviços nessa categoria
+    const totalServ = servicos.filter(s => s.categoriaId === cat.id).length;
+
+    card.innerHTML = `
+      <div class="shortcut-icon">${cat.icone}</div>
+      <h3>${escapeHTML(cat.nome)}</h3>
+      <span class="shortcut-count">${totalServ} serviços disponíveis</span>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// Redireciona da Home para aba de Agendar com categoria ativa
+function selecionarSetorEAgendar(categoriaId) {
+  showSection("agendar");
+  selecionarCategoriaAgendar(categoriaId);
+}
+
+// Renderiza os botões visuais de categorias na tela de agendamento
+function renderizarCategoriasAgendar() {
+  const container = document.getElementById("seletorCategoriasAgendar");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  categorias.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "category-card-btn";
+    btn.setAttribute("data-id", cat.id);
+    btn.onclick = () => selecionarCategoriaAgendar(cat.id);
+
+    btn.innerHTML = `
+      <span class="cat-btn-icon">${cat.icone}</span>
+      <span class="cat-btn-text">${escapeHTML(cat.nome)}</span>
+    `;
+
+    container.appendChild(btn);
+  });
+}
+
+// Lógica de ativação da categoria e recarga de serviços filtrados
+function selecionarCategoriaAgendar(categoriaId) {
+  categoriaSelecionadaAgendar = categoriaId;
+
+  // Atualizar visual dos botões
+  document.querySelectorAll(".category-card-btn").forEach(btn => {
+    if (btn.getAttribute("data-id") === categoriaId) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  // Limpar erro de serviço
+  document.getElementById("erroServico").textContent = "";
+
+  // Carregar os serviços dessa categoria no select do form
+  const selectServico = document.getElementById("tipoServico");
+  if (!selectServico) return;
+
+  selectServico.innerHTML = '<option value="">Selecione o serviço...</option>';
+
+  const servicosFiltrados = servicos.filter(s => s.categoriaId === categoriaId);
+
+  if (servicosFiltrados.length === 0) {
+    selectServico.innerHTML = '<option value="">Nenhum serviço cadastrado para esta categoria...</option>';
+    return;
+  }
+
+  servicosFiltrados.forEach(s => {
+    const option = document.createElement("option");
+    option.value = s.nome;
+    option.textContent = s.nome;
+    selectServico.appendChild(option);
+  });
+}
+
+// ==========================================
+// 7. CRIAÇÃO DE NOVO AGENDAMENTO
 // ==========================================
 
 function salvarAgendamento(event) {
@@ -291,7 +437,10 @@ function salvarAgendamento(event) {
     document.getElementById("erroTelefone").textContent = "Informe um telefone válido (ex: (11) 98888-7777).";
     erro = true;
   }
-  if (!servicoSelect.value) {
+  if (!categoriaSelecionadaAgendar) {
+    document.getElementById("erroServico").textContent = "Por favor, selecione uma categoria/setor acima.";
+    erro = true;
+  } else if (!servicoSelect.value) {
     document.getElementById("erroServico").textContent = "Selecione o serviço/atendimento.";
     erro = true;
   }
@@ -319,7 +468,7 @@ function salvarAgendamento(event) {
   // Verificar se há conflito de horário por garantia
   const conflito = agendamentos.some(a => a.data === dataSelecionada && a.horario === horarioSelecionado && a.id !== editandoId);
   if (conflito) {
-    showToast("Este horário já foi reservado por outro cliente.", "danger");
+    showToast("Este horário já foi reservado.", "danger");
     return;
   }
 
@@ -329,6 +478,7 @@ function salvarAgendamento(event) {
     if (index !== -1) {
       agendamentos[index].nome = nomeInput.value.trim();
       agendamentos[index].telefone = telefoneInput.value.trim();
+      agendamentos[index].categoriaId = categoriaSelecionadaAgendar;
       agendamentos[index].servico = servicoSelect.value;
       agendamentos[index].data = dataSelecionada;
       agendamentos[index].horario = horarioSelecionado;
@@ -340,10 +490,11 @@ function salvarAgendamento(event) {
       id: generateId(),
       nome: nomeInput.value.trim(),
       telefone: telefoneInput.value.trim(),
+      categoriaId: categoriaSelecionadaAgendar,
       servico: servicoSelect.value,
       data: dataSelecionada,
       horario: horarioSelecionado,
-      status: "pendente", // Status padrão inicial: pendente
+      status: "pendente",
       dataCriacao: new Date().toISOString()
     };
     agendamentos.push(novoAgendamento);
@@ -366,6 +517,11 @@ function limparFormulario() {
   document.getElementById("horarioAgendamento").innerHTML = '<option value="">Selecione uma data primeiro...</option>';
   document.getElementById("hintDataBloqueada").textContent = "";
 
+  // Desmarcar categoria selecionada
+  categoriaSelecionadaAgendar = "";
+  document.querySelectorAll(".category-card-btn").forEach(btn => btn.classList.remove("active"));
+  document.getElementById("tipoServico").innerHTML = '<option value="">Selecione uma categoria acima...</option>';
+
   // Limpar spans de erro
   document.getElementById("erroNome").textContent = "";
   document.getElementById("erroTelefone").textContent = "";
@@ -373,13 +529,28 @@ function limparFormulario() {
   document.getElementById("erroData").textContent = "";
   document.getElementById("erroHorario").textContent = "";
 
-  // Resetar texto do botão principal de salvar
+  // Resetar botão principal de salvar
   document.getElementById("btnSalvarAgendamento").innerHTML = "<span>✅</span> Confirmar agendamento";
 }
 
 // ==========================================
-// 7. PAINEL ADMIN: LISTAGEM & OPERAÇÕES
+// 8. PAINEL ADMIN: LISTAGEM & OPERAÇÕES
 // ==========================================
+
+// Preenche filtros de categorias no admin
+function renderizarCategoriasAdmin() {
+  const selectFiltro = document.getElementById("filtroSetor");
+  if (!selectFiltro) return;
+
+  selectFiltro.innerHTML = '<option value="">Todos os setores</option>';
+
+  categorias.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat.id;
+    option.textContent = `${cat.icone} ${cat.nome}`;
+    selectFiltro.appendChild(option);
+  });
+}
 
 function renderizarAgendamentos() {
   const container = document.getElementById("listaAgendamentos");
@@ -391,13 +562,18 @@ function renderizarAgendamentos() {
   const busca = document.getElementById("filtroBusca").value.toLowerCase();
   const status = document.getElementById("filtroStatus").value;
   const data = document.getElementById("filtroData").value;
+  const setor = document.getElementById("filtroSetor").value;
 
   // Filtrar dados
   const agendamentosFiltrados = agendamentos.filter(a => {
-    const atendeBusca = !busca || a.nome.toLowerCase().includes(busca) || a.telefone.includes(busca) || a.servico.toLowerCase().includes(busca);
+    const atendeBusca = !busca || 
+                       a.nome.toLowerCase().includes(busca) || 
+                       a.telefone.includes(busca) || 
+                       a.servico.toLowerCase().includes(busca);
     const atendeStatus = !status || a.status === status;
     const atendeData = !data || a.data === data;
-    return atendeBusca && atendeStatus && atendeData;
+    const atendeSetor = !setor || a.categoriaId === setor;
+    return atendeBusca && atendeStatus && atendeData && atendeSetor;
   });
 
   // Ordenar por data (mais recente no topo) e depois horário
@@ -433,6 +609,9 @@ function renderizarAgendamentos() {
     const card = document.createElement("div");
     card.className = "appointment-card";
 
+    // Achar ícone e nome da categoria
+    const catInfo = categorias.find(c => c.id === a.categoriaId) || { nome: "Outro", icone: "💼" };
+
     // Formatar data em padrão brasileiro
     const [ano, mes, dia] = a.data.split("-");
     const dataFormatada = `${dia}/${mes}/${ano}`;
@@ -443,7 +622,8 @@ function renderizarAgendamentos() {
           <div class="client-name">${escapeHTML(a.nome)}</div>
           <div class="client-phone">📞 ${escapeHTML(a.telefone)}</div>
         </div>
-        <div>
+        <div class="appointment-category-service">
+          <span class="category-indicator-badge" title="Setor: ${escapeHTML(catInfo.nome)}">${catInfo.icone} ${escapeHTML(catInfo.nome)}</span>
           <span class="service-badge">${escapeHTML(a.servico)}</span>
         </div>
         <div class="appointment-time-box">
@@ -485,32 +665,31 @@ function limparFiltros() {
   document.getElementById("filtroBusca").value = "";
   document.getElementById("filtroStatus").value = "";
   document.getElementById("filtroData").value = "";
+  document.getElementById("filtroSetor").value = "";
   renderizarAgendamentos();
 }
 
-// Confirmar Agendamento
 function confirmarAgendamento(id) {
   const index = agendamentos.findIndex(a => a.id === id);
   if (index !== -1) {
     agendamentos[index].status = "confirmado";
     salvarDados();
     renderizarAgendamentos();
-    showToast("Agendamento confirmado com sucesso!", "success");
+    showToast("Agendamento confirmado!", "success");
   }
 }
 
-// Excluir Agendamento
 function excluirAgendamento(id) {
   if (confirm("Tem certeza que deseja excluir este agendamento?")) {
     agendamentos = agendamentos.filter(a => a.id !== id);
     salvarDados();
     renderizarAgendamentos();
-    showToast("Agendamento excluído com sucesso.", "warning");
+    showToast("Agendamento excluído.", "warning");
   }
 }
 
 // ==========================================
-// 8. MODAL DE EDIÇÃO DE AGENDAMENTO
+// 9. MODAL DE EDIÇÃO DE AGENDAMENTO
 // ==========================================
 
 function abrirModalEdicao(id) {
@@ -520,10 +699,25 @@ function abrirModalEdicao(id) {
   document.getElementById("editId").value = a.id;
   document.getElementById("editNome").value = a.nome;
   document.getElementById("editTelefone").value = a.telefone;
-  document.getElementById("editServico").value = a.servico;
   document.getElementById("editData").value = a.data;
 
-  // Carregar os horários para a modal de edição de acordo com a data configurada
+  // Carregar categorias no modal
+  const selectModalCat = document.getElementById("editCategoria");
+  if (selectModalCat) {
+    selectModalCat.innerHTML = "";
+    categorias.forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat.id;
+      option.textContent = `${cat.icone} ${cat.nome}`;
+      selectModalCat.appendChild(option);
+    });
+    selectModalCat.value = a.categoriaId;
+  }
+
+  // Carregar os serviços correspondentes à categoria no modal
+  carregarServicosModalEdicao(a.categoriaId, a.servico);
+
+  // Carregar horários para edição
   carregarHorariosModal(a.horario);
 
   document.getElementById("modalOverlay").style.display = "flex";
@@ -531,6 +725,30 @@ function abrirModalEdicao(id) {
 
 function fecharModal() {
   document.getElementById("modalOverlay").style.display = "none";
+}
+
+function carregarServicosModalEdicao(categoriaId, servicoSelecionado = "") {
+  const selectServico = document.getElementById("editServico");
+  if (!selectServico) return;
+
+  selectServico.innerHTML = "";
+  const servicosFiltrados = servicos.filter(s => s.categoriaId === categoriaId);
+
+  servicosFiltrados.forEach(s => {
+    const option = document.createElement("option");
+    option.value = s.nome;
+    option.textContent = s.nome;
+    if (s.nome === servicoSelecionado) {
+      option.selected = true;
+    }
+    selectServico.appendChild(option);
+  });
+}
+
+function aoMudarCategoriaModal() {
+  const selectModalCat = document.getElementById("editCategoria");
+  if (!selectModalCat) return;
+  carregarServicosModalEdicao(selectModalCat.value);
 }
 
 function carregarHorariosModal(horarioSelecionado = "") {
@@ -552,11 +770,11 @@ function carregarHorariosModal(horarioSelecionado = "") {
   const dataBloqueada = datasBloqueadas.find(b => b.data === dataSelecionada);
   if (dataBloqueada) {
     selectHorario.innerHTML = '<option value="">Indisponível (Data Bloqueada)</option>';
-    showToast("Esta data está bloqueada pelo administrador.", "danger");
+    showToast("Data bloqueada pelo administrador.", "danger");
     return;
   }
 
-  // Filtrar horários ocupados (excluindo o agendamento atual para permitir manter o mesmo horário)
+  // Filtrar horários ocupados (exclui o atual para permitir manter)
   const horariosOcupados = agendamentos
     .filter(a => a.data === dataSelecionada && a.id !== editId)
     .map(a => a.horario);
@@ -578,12 +796,13 @@ function salvarEdicao() {
   const id = document.getElementById("editId").value;
   const nome = document.getElementById("editNome").value.trim();
   const telefone = document.getElementById("editTelefone").value.trim();
+  const categoriaId = document.getElementById("editCategoria").value;
   const servico = document.getElementById("editServico").value;
   const data = document.getElementById("editData").value;
   const horario = document.getElementById("editHorario").value;
 
-  if (!nome || !telefone || !servico || !data || !horario) {
-    showToast("Por favor, preencha todos os campos obrigatórios na modal.", "danger");
+  if (!nome || !telefone || !categoriaId || !servico || !data || !horario) {
+    showToast("Preencha todos os campos obrigatórios.", "danger");
     return;
   }
 
@@ -594,10 +813,10 @@ function salvarEdicao() {
     return;
   }
 
-  // Validação de conflito de horário
+  // Conflito de horário
   const conflito = agendamentos.some(a => a.data === data && a.horario === horario && a.id !== id);
   if (conflito) {
-    showToast("Este horário já está ocupado por outro agendamento.", "danger");
+    showToast("Horário indisponível ou em conflito.", "danger");
     return;
   }
 
@@ -605,6 +824,7 @@ function salvarEdicao() {
   if (index !== -1) {
     agendamentos[index].nome = nome;
     agendamentos[index].telefone = telefone;
+    agendamentos[index].categoriaId = categoriaId;
     agendamentos[index].servico = servico;
     agendamentos[index].data = data;
     agendamentos[index].horario = horario;
@@ -617,7 +837,7 @@ function salvarEdicao() {
 }
 
 // ==========================================
-// 9. BLOQUEIO DE DATAS
+// 10. BLOQUEIO DE DATAS
 // ==========================================
 
 function bloquearData() {
@@ -632,7 +852,6 @@ function bloquearData() {
   const dataBloqueio = inputData.value;
   const motivoBloqueio = inputMotivo.value.trim();
 
-  // Verificar se a data já está bloqueada
   if (datasBloqueadas.some(b => b.data === dataBloqueio)) {
     showToast("Esta data já se encontra bloqueada.", "danger");
     return;
@@ -648,11 +867,8 @@ function bloquearData() {
   datasBloqueadas.push(novoBloqueio);
   salvarDados();
   renderizarBloqueios();
-  
-  // Atualizar tela de agendamento em tempo real caso a data esteja selecionada
   carregarHorariosDisponiveis();
 
-  // Limpar inputs de bloqueio
   inputData.value = "";
   inputMotivo.value = "";
 
@@ -664,11 +880,8 @@ function desbloquearData(id) {
     datasBloqueadas = datasBloqueadas.filter(b => b.id !== id);
     salvarDados();
     renderizarBloqueios();
-    
-    // Atualizar tela de agendamento em tempo real
     carregarHorariosDisponiveis();
-    
-    showToast("Bloqueio removido com sucesso.", "warning");
+    showToast("Bloqueio removido.", "warning");
   }
 }
 
@@ -678,9 +891,7 @@ function renderizarBloqueios() {
 
   if (!container) return;
 
-  // Ordenar por data
   datasBloqueadas.sort((a, b) => a.data.localeCompare(b.data));
-
   container.innerHTML = "";
 
   if (datasBloqueadas.length === 0) {
@@ -712,7 +923,175 @@ function renderizarBloqueios() {
 }
 
 // ==========================================
-// 10. TOAST NOTIFICATION SYSTEM
+// 11. GERENCIAMENTO DE SERVIÇOS E CATEGORIAS (ADMIN)
+// ==========================================
+
+// Preenche o dropdown de categoria no formulário de novos serviços
+function renderizarCategoriasAdminServicos() {
+  const selectForm = document.getElementById("categoriaServicoForm");
+  if (!selectForm) return;
+
+  selectForm.innerHTML = '<option value="">Selecione uma categoria...</option>';
+
+  categorias.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat.id;
+    option.textContent = `${cat.icone} ${cat.nome}`;
+    selectForm.appendChild(option);
+  });
+}
+
+function renderizarServicosAdmin() {
+  renderizarCategoriasAdminServicos(); // Mantém o formulário sincronizado
+
+  const container = document.getElementById("listaServicosAdmin");
+  const emptyState = document.getElementById("emptyServicosAdmin");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (servicos.length === 0) {
+    if (emptyState) emptyState.style.display = "block";
+    return;
+  }
+
+  if (emptyState) emptyState.style.display = "none";
+
+  // Ordenar por categoria e depois por nome
+  const servicosOrdenados = [...servicos].sort((a, b) => {
+    const catA = categorias.find(c => c.id === a.categoriaId)?.nome || "";
+    const catB = categorias.find(c => c.id === b.categoriaId)?.nome || "";
+    if (catA !== catB) return catA.localeCompare(catB);
+    return a.nome.localeCompare(b.nome);
+  });
+
+  servicosOrdenados.forEach(s => {
+    const item = document.createElement("div");
+    item.className = "servico-item";
+
+    const catInfo = categorias.find(c => c.id === s.categoriaId) || { nome: "Outro", icone: "💼" };
+
+    item.innerHTML = `
+      <div class="servico-info">
+        <h4>💼 ${escapeHTML(s.nome)}</h4>
+        <span class="servico-category-tag">${catInfo.icone} ${escapeHTML(catInfo.nome)}</span>
+        <p>${escapeHTML(s.descricao || "Sem descrição cadastrada")}</p>
+      </div>
+      <div class="servico-actions">
+        <button class="btn btn-sm btn-outline" onclick="abrirEdicaoServico('${s.id}')" title="Editar">
+          Editar
+        </button>
+        <button class="btn btn-sm btn-outline btn-danger" onclick="excluirServico('${s.id}')" title="Excluir">
+          Excluir
+        </button>
+      </div>
+    `;
+
+    container.appendChild(item);
+  });
+}
+
+function salvarServico() {
+  const inputNome = document.getElementById("nomeServico");
+  const selectCategoria = document.getElementById("categoriaServicoForm");
+  const inputDescricao = document.getElementById("descricaoServico");
+  const inputId = document.getElementById("editandoServicoId");
+
+  if (!inputNome || !inputNome.value.trim() || !selectCategoria.value) {
+    showToast("Por favor, preencha o nome do serviço e a categoria.", "danger");
+    return;
+  }
+
+  const nome = inputNome.value.trim();
+  const categoriaId = selectCategoria.value;
+  const descricao = inputDescricao.value.trim();
+  const id = inputId.value;
+
+  // Duplicidade de nome
+  const duplicado = servicos.some(s => s.nome.toLowerCase() === nome.toLowerCase() && s.categoriaId === categoriaId && s.id !== id);
+  if (duplicado) {
+    showToast("Serviço já existente nesta categoria.", "danger");
+    return;
+  }
+
+  if (id) {
+    // Editar
+    const index = servicos.findIndex(s => s.id === id);
+    if (index !== -1) {
+      servicos[index].nome = nome;
+      servicos[index].categoriaId = categoriaId;
+      servicos[index].descricao = descricao;
+      showToast("Serviço atualizado com sucesso!", "success");
+    }
+  } else {
+    // Adicionar novo
+    const novoServico = {
+      id: generateId(),
+      categoriaId: categoriaId,
+      nome: nome,
+      descricao: descricao
+    };
+    servicos.push(novoServico);
+    showToast("Serviço cadastrado com sucesso!", "success");
+  }
+
+  salvarDados();
+  renderizarServicosAdmin();
+  renderizarCategoriasHome();
+  renderizarCategoriasAgendar();
+  limparFormularioServico();
+}
+
+function abrirEdicaoServico(id) {
+  const s = servicos.find(item => item.id === id);
+  if (!s) return;
+
+  document.getElementById("editandoServicoId").value = s.id;
+  document.getElementById("nomeServico").value = s.nome;
+  document.getElementById("categoriaServicoForm").value = s.categoriaId;
+  document.getElementById("descricaoServico").value = s.descricao || "";
+
+  const btn = document.getElementById("btnSalvarServico");
+  if (btn) btn.innerHTML = "<span>💾</span> Salvar alterações";
+}
+
+function limparFormularioServico() {
+  document.getElementById("nomeServico").value = "";
+  document.getElementById("categoriaServicoForm").value = "";
+  document.getElementById("descricaoServico").value = "";
+  document.getElementById("editandoServicoId").value = "";
+
+  const btn = document.getElementById("btnSalvarServico");
+  if (btn) btn.innerHTML = "<span>➕</span> Cadastrar serviço";
+}
+
+function excluirServico(id) {
+  const s = servicos.find(item => item.id === id);
+  if (!s) return;
+
+  const emUso = agendamentos.some(a => a.servico === s.nome);
+  let msg = "Deseja excluir este serviço?";
+  if (emUso) {
+    msg = `⚠️ Este serviço está sendo utilizado em agendamentos.\nExcluí-lo impedirá novos agendamentos, mas os registros antigos não serão afetados. Deseja prosseguir?`;
+  }
+
+  if (confirm(msg)) {
+    servicos = servicos.filter(item => item.id !== id);
+    salvarDados();
+    renderizarServicosAdmin();
+    renderizarCategoriasHome();
+    renderizarCategoriasAgendar();
+    showToast("Serviço excluído.", "warning");
+    
+    if (document.getElementById("editandoServicoId").value === id) {
+      limparFormularioServico();
+    }
+  }
+}
+
+// ==========================================
+// 12. TOAST NOTIFICATION SYSTEM
 // ==========================================
 
 function showToast(mensagem, tipo = "success") {
@@ -742,7 +1121,7 @@ function showToast(mensagem, tipo = "success") {
 }
 
 // ==========================================
-// 11. UTILITÁRIOS
+// 13. UTILITÁRIOS
 // ==========================================
 
 function generateId() {
@@ -758,205 +1137,4 @@ function escapeHTML(str) {
     "'": '&#39;',
     '"': '&quot;'
   }[tag] || tag));
-}
-
-// ==========================================
-// 12. GERENCIAMENTO DE SERVIÇOS
-// ==========================================
-
-function carregarServicosNosFormularios() {
-  const selectAgendar = document.getElementById("tipoServico");
-  const selectModal = document.getElementById("editServico");
-
-  if (selectAgendar) {
-    const valAnterior = selectAgendar.value;
-    selectAgendar.innerHTML = '<option value="">Selecione o serviço...</option>';
-    servicos.forEach(s => {
-      const option = document.createElement("option");
-      option.value = s.nome;
-      option.textContent = s.nome;
-      selectAgendar.appendChild(option);
-    });
-    if (servicos.some(s => s.nome === valAnterior)) {
-      selectAgendar.value = valAnterior;
-    }
-  }
-
-  if (selectModal) {
-    const valAnterior = selectModal.value;
-    selectModal.innerHTML = '<option value="">Selecione o serviço...</option>';
-    servicos.forEach(s => {
-      const option = document.createElement("option");
-      option.value = s.nome;
-      option.textContent = s.nome;
-      selectModal.appendChild(option);
-    });
-    if (servicos.some(s => s.nome === valAnterior)) {
-      selectModal.value = valAnterior;
-    }
-  }
-}
-
-function renderizarServicos() {
-  const container = document.getElementById("listaServicos");
-  const emptyState = document.getElementById("emptyServicos");
-
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  if (servicos.length === 0) {
-    if (emptyState) emptyState.style.display = "block";
-    return;
-  }
-
-  if (emptyState) emptyState.style.display = "none";
-
-  servicos.forEach(s => {
-    const item = document.createElement("div");
-    item.className = "servico-item";
-
-    item.innerHTML = `
-      <div class="servico-info">
-        <h4>💼 ${escapeHTML(s.nome)}</h4>
-        <p>${escapeHTML(s.descricao || "Sem descrição cadastrada")}</p>
-      </div>
-      <div class="servico-actions">
-        <button class="btn btn-sm btn-outline" onclick="abrirEdicaoServico('${s.id}')" title="Editar">
-          Editar
-        </button>
-        <button class="btn btn-sm btn-outline btn-danger" onclick="excluirServico('${s.id}')" title="Excluir">
-          Excluir
-        </button>
-      </div>
-    `;
-
-    container.appendChild(item);
-  });
-}
-
-function salvarServico() {
-  const inputNome = document.getElementById("nomeServico");
-  const inputDescricao = document.getElementById("descricaoServico");
-  const inputId = document.getElementById("editandoServicoId");
-
-  if (!inputNome || !inputNome.value.trim()) {
-    showToast("Por favor, preencha o nome do serviço.", "danger");
-    return;
-  }
-
-  const nome = inputNome.value.trim();
-  const descricao = inputDescricao.value.trim();
-  const id = inputId.value;
-
-  const duplicado = servicos.some(s => s.nome.toLowerCase() === nome.toLowerCase() && s.id !== id);
-  if (duplicado) {
-    showToast("Já existe um serviço cadastrado com este nome.", "danger");
-    return;
-  }
-
-  if (id) {
-    const index = servicos.findIndex(s => s.id === id);
-    if (index !== -1) {
-      servicos[index].nome = nome;
-      servicos[index].descricao = descricao;
-      showToast("Serviço atualizado com sucesso!", "success");
-    }
-  } else {
-    const novoServico = {
-      id: generateId(),
-      nome: nome,
-      descricao: descricao
-    };
-    servicos.push(novoServico);
-    showToast("Serviço adicionado com sucesso!", "success");
-  }
-
-  salvarDados();
-  renderizarServicos();
-  carregarServicosNosFormularios();
-  limparFormularioServico();
-}
-
-function abrirEdicaoServico(id) {
-  const s = servicos.find(item => item.id === id);
-  if (!s) return;
-
-  document.getElementById("editandoServicoId").value = s.id;
-  document.getElementById("nomeServico").value = s.nome;
-  document.getElementById("descricaoServico").value = s.descricao || "";
-
-  const btn = document.getElementById("btnSalvarServico");
-  if (btn) {
-    btn.innerHTML = "<span>💾</span> Salvar alterações";
-  }
-}
-
-function limparFormularioServico() {
-  document.getElementById("nomeServico").value = "";
-  document.getElementById("descricaoServico").value = "";
-  document.getElementById("editandoServicoId").value = "";
-
-  const btn = document.getElementById("btnSalvarServico");
-  if (btn) {
-    btn.innerHTML = "<span>➕</span> Adicionar serviço";
-  }
-}
-
-function excluirServico(id) {
-  const s = servicos.find(item => item.id === id);
-  if (!s) return;
-
-  const emUso = agendamentos.some(a => a.servico === s.nome);
-  let msg = "Tem certeza que deseja excluir este serviço?";
-  if (emUso) {
-    msg = `⚠️ Este serviço está sendo usado em agendamentos existentes.\nExcluí-lo impedirá novos agendamentos para este serviço, mas não afetará os existentes.\nDeseja mesmo continuar?`;
-  }
-
-  if (confirm(msg)) {
-    servicos = servicos.filter(item => item.id !== id);
-    salvarDados();
-    renderizarServicos();
-    carregarServicosNosFormularios();
-    showToast("Serviço excluído com sucesso.", "warning");
-    
-    if (document.getElementById("editandoServicoId").value === id) {
-      limparFormularioServico();
-    }
-  }
-}
-
-function carregarPreset(area, acao) {
-  const preset = PRESETS_SERVICOS[area];
-  if (!preset) return;
-
-  if (acao === "sobrescrever") {
-    if (confirm("⚠️ Isso irá apagar todos os serviços atuais e substituí-los pelo preset selecionado. Deseja continuar?")) {
-      servicos = JSON.parse(JSON.stringify(preset));
-      showToast("Preset carregado com sucesso!", "success");
-    } else {
-      return;
-    }
-  } else {
-    let adicionadosCount = 0;
-    preset.forEach(p => {
-      if (!servicos.some(s => s.nome.toLowerCase() === p.nome.toLowerCase())) {
-        servicos.push({
-          id: generateId(),
-          nome: p.nome,
-          descricao: p.descricao
-        });
-        adicionadosCount++;
-      }
-    });
-    if (adicionadosCount > 0) {
-      showToast(`${adicionadosCount} novos serviços adicionados do preset!`, "success");
-    } else {
-      showToast("Todos os serviços do preset já estavam cadastrados.", "info");
-    }
-  }
-
-  salvarDados();
-  renderizarServicos();
-  carregarServicosNosFormularios();
 }

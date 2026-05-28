@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="EcoAgenda - Sistema de agendamento online sustentável. Substitua agendas de papel por uma solução digital moderna e ecológica." />
-  <title>EcoAgenda | Agendamento Sustentável</title>
+  <meta name="description" content="EcoAgenda - Sistema de agendamento online sustentável. Organize consultas, aulas, atendimentos de beleza, suporte técnico e serviços de escritório." />
+  <title>EcoAgenda | Agendamento Sustentável Multi-Setorial</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts (Outfit & Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Folha de estilos principal -->
   <link rel="stylesheet" href="style.css" />
@@ -22,7 +22,7 @@
   <header class="header" id="header">
     <div class="container header-inner">
       <!-- Logo -->
-      <div class="logo">
+      <div class="logo" onclick="showSection('home')">
         <span class="logo-icon">🌿</span>
         <span class="logo-text">EcoAgenda</span>
       </div>
@@ -44,112 +44,92 @@
   </header>
 
   <!-- =============================================
-       SEÇÃO 1: PÁGINA INICIAL (HOME)
+       SEÇÃO 1: INÍCIO (HOME)
   ============================================== -->
   <section class="section active" id="home">
-
-    <!-- Hero principal -->
-    <div class="hero">
-      <div class="hero-bg-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-      </div>
-      <div class="container hero-content">
-        <div class="hero-badge">
-          <span>🌱</span> 100% Digital &amp; Sustentável
-        </div>
-        <h1 class="hero-title">
-          Organize seus<br/>
-          <span class="highlight">agendamentos</span><br/>
-          sem papel
-        </h1>
-        <p class="hero-subtitle">
-          O EcoAgenda substitui agendas de papel por uma plataforma digital moderna.
-          Reduza o desperdício, economize recursos e mantenha seus compromissos
-          sempre organizados — tudo no seu navegador, sem cadastro.
-        </p>
-        <div class="hero-actions">
-          <button class="btn btn-primary btn-large" id="btnAgendarHero" onclick="showSection('agendar')">
-            <span>📅</span> Agendar horário
-          </button>
-          <button class="btn btn-outline btn-large" onclick="showSection('admin')">
-            <span>📋</span> Ver agendamentos
-          </button>
-        </div>
-
-        <!-- Estatísticas de impacto ambiental -->
-        <div class="stats-row">
-          <div class="stat-card">
-            <div class="stat-icon">🌳</div>
-            <div class="stat-value" id="statArvores">0</div>
-            <div class="stat-label">Folhas economizadas</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">💧</div>
-            <div class="stat-value" id="statAgua">0L</div>
-            <div class="stat-label">Água preservada</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">📅</div>
-            <div class="stat-value" id="statAgendamentos">0</div>
-            <div class="stat-label">Agendamentos digitais</div>
+    <!-- Hero / Apresentação -->
+    <div class="hero-bg">
+      <div class="container hero">
+        <div class="hero-content">
+          <h1 class="hero-title">Organize seus agendamentos sem desperdício de papel</h1>
+          <p class="hero-subtitle">
+            O **EcoAgenda** centraliza agendamentos para múltiplos setores em uma plataforma digital limpa. Escolha o serviço, reserve a data e reduza sua pegada ecológica.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="showSection('agendar')">
+              📅 Agendar Agora
+            </button>
+            <a href="#servicos" class="btn btn-outline btn-white" onclick="showSection('servicos')">
+              💼 Ver Setores &amp; Serviços
+            </a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Cards de benefícios -->
-    <div class="container benefits-section">
-      <h2 class="section-title">Por que o EcoAgenda?</h2>
-      <div class="benefits-grid">
-        <div class="benefit-card">
-          <div class="benefit-icon">♻️</div>
-          <h3>Zero papel</h3>
-          <p>Cada agendamento digital elimina uma folha de papel, contribuindo para a preservação das florestas.</p>
+    <!-- Impacto Ecológico Real-time -->
+    <div class="container impact-container">
+      <div class="card card-impact">
+        <div class="impact-header">
+          <span class="impact-badge">🌍 Nosso Impacto Ecológico</span>
+          <h2 class="card-title">Sua contribuição com o meio ambiente</h2>
         </div>
-        <div class="benefit-card">
-          <div class="benefit-icon">⚡</div>
-          <h3>Rápido e simples</h3>
-          <p>Agende em segundos, sem filas, ligações ou espera. Tudo na palma da mão.</p>
-        </div>
-        <div class="benefit-card">
-          <div class="benefit-icon">🔒</div>
-          <h3>Privado e local</h3>
-          <p>Seus dados ficam somente no seu dispositivo. Nenhuma informação enviada para servidores externos.</p>
-        </div>
-        <div class="benefit-card">
-          <div class="benefit-icon">📊</div>
-          <h3>Painel completo</h3>
-          <p>Gerencie todos os agendamentos, confirme, edite ou cancele com facilidade pelo painel administrativo.</p>
+        <div class="impact-grid">
+          <div class="impact-item">
+            <div class="impact-icon">📄</div>
+            <div class="impact-val" id="statArvores">0</div>
+            <div class="impact-lbl">Folhas A4 salvas</div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-icon">💧</div>
+            <div class="impact-val" id="statAgua">0L</div>
+            <div class="impact-lbl">Água preservada</div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-icon">📅</div>
+            <div class="impact-val" id="statAgendamentos">0</div>
+            <div class="impact-lbl">Agendamentos digitais</div>
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- Grade de Categorias / Atalho Rápido -->
+    <div class="container home-categories-section">
+      <div class="section-header-title">
+        <h2>Selecione uma área para agendar atendimento</h2>
+        <p>Clique no nicho de sua preferência para visualizar os serviços disponíveis e realizar a reserva</p>
+      </div>
+
+      <div class="category-shortcut-grid" id="gridCategoriasHome">
+        <!-- Renderizado dinamicamente pelo JS -->
+      </div>
+    </div>
   </section>
 
   <!-- =============================================
-       SEÇÃO 2: FORMULÁRIO DE AGENDAMENTO
+       SEÇÃO 2: AGENDAR HORÁRIO
   ============================================== -->
   <section class="section" id="agendar">
     <div class="container page-header">
       <div class="page-title-group">
-        <h1 class="page-title">📅 Agendar Horário</h1>
-        <p class="page-subtitle">Preencha os dados abaixo para realizar seu agendamento</p>
+        <h1 class="page-title">📅 Reservar Atendimento</h1>
+        <p class="page-subtitle">Selecione o setor, o serviço ideal e escolha um horário conveniente</p>
       </div>
     </div>
 
-    <div class="container form-layout">
-      <!-- Formulário principal -->
-      <div class="card form-card">
-        <h2 class="card-title">Dados do agendamento</h2>
+    <div class="container scheduling-layout">
+      <!-- Formulário de Agendamento -->
+      <div class="card scheduling-card">
+        <h2 class="card-title">Preencha seus dados</h2>
 
-        <form id="formAgendamento" onsubmit="salvarAgendamento(event)" novalidate>
+        <form id="formAgendamento" onsubmit="salvarAgendamento(event)">
+          <input type="hidden" id="editandoId" value="" />
 
-          <!-- Nome completo -->
+          <!-- Nome -->
           <div class="form-group">
             <label for="nomeCompleto" class="form-label">
-              👤 Nome completo <span class="required">*</span>
+              👤 Seu nome completo <span class="required">*</span>
             </label>
             <input
               type="text"
@@ -165,7 +145,7 @@
           <!-- Telefone -->
           <div class="form-group">
             <label for="telefone" class="form-label">
-              📞 Telefone <span class="required">*</span>
+              📞 Telefone para contato <span class="required">*</span>
             </label>
             <input
               type="tel"
@@ -179,21 +159,31 @@
             <span class="form-error" id="erroTelefone"></span>
           </div>
 
+          <!-- Seletor Visual de Categoria -->
+          <div class="form-group">
+            <label class="form-label">
+              🏢 Escolha a categoria / setor de atendimento <span class="required">*</span>
+            </label>
+            <div class="category-selection-grid" id="seletorCategoriasAgendar">
+              <!-- Botões gerados dinamicamente -->
+            </div>
+            <span class="form-error" id="erroServico"></span>
+          </div>
+
           <!-- Tipo de serviço -->
           <div class="form-group">
             <label for="tipoServico" class="form-label">
-              🛠️ Tipo de atendimento / Serviço <span class="required">*</span>
+              🛠️ Serviço específico <span class="required">*</span>
             </label>
             <select id="tipoServico" class="form-input form-select" required>
-              <option value="">Selecione o serviço...</option>
+              <option value="">Selecione uma categoria acima...</option>
             </select>
-            <span class="form-error" id="erroServico"></span>
           </div>
 
           <!-- Data -->
           <div class="form-group">
             <label for="dataAgendamento" class="form-label">
-              📆 Data <span class="required">*</span>
+              📆 Data do atendimento <span class="required">*</span>
             </label>
             <input
               type="date"
@@ -203,7 +193,7 @@
               onchange="carregarHorariosDisponiveis()"
             />
             <span class="form-error" id="erroData"></span>
-            <span class="form-hint" id="hintDataBloqueada"></span>
+            <div class="date-info-note" id="hintDataBloqueada"></div>
           </div>
 
           <!-- Horário -->
@@ -217,38 +207,30 @@
             <span class="form-error" id="erroHorario"></span>
           </div>
 
-          <!-- Campo oculto para edição -->
-          <input type="hidden" id="editandoId" value="" />
-
-          <!-- Botões de ação -->
+          <!-- Ações -->
           <div class="form-actions">
             <button type="submit" class="btn btn-primary" id="btnSalvarAgendamento">
               <span>✅</span> Confirmar agendamento
             </button>
             <button type="button" class="btn btn-outline" onclick="limparFormulario()">
-              <span>🔄</span> Limpar
+              <span>🔄</span> Limpar formulário
             </button>
           </div>
-
         </form>
       </div>
 
-      <!-- Painel lateral de informações -->
-      <div class="form-sidebar">
-        <div class="card info-card">
-          <h3 class="card-title">ℹ️ Informações</h3>
-          <ul class="info-list">
-            <li>Horários disponíveis: <strong>08:00 às 18:00</strong></li>
-            <li>Intervalos de <strong>30 minutos</strong></li>
-            <li>Agendamentos realizados em <strong>tempo real</strong></li>
-            <li>Datas bloqueadas pelo administrador <strong>não estarão disponíveis</strong></li>
+      <!-- Informações Úteis Adicionais -->
+      <div class="scheduling-info">
+        <div class="card card-eco-tip">
+          <h3>🌿 Atendimento Ecológico</h3>
+          <p>
+            Ao agendar conosco, você evita o uso de canetas de plástico, blocos de papel e o deslocamento desnecessário para agendamento presencial. 
+          </p>
+          <ul class="eco-list">
+            <li>🔒 Seus dados são guardados de forma segura localmente no navegador.</li>
+            <li>⏳ Lembre-se de comparecer com 5 minutos de antecedência.</li>
+            <li>🚫 Caso precise cancelar, acesse o painel administrativo ou entre em contato.</li>
           </ul>
-        </div>
-
-        <div class="card eco-card">
-          <div class="eco-icon">🌿</div>
-          <h3>Você está fazendo a diferença!</h3>
-          <p>Cada agendamento digital evita o uso de papel e contribui para um futuro mais verde.</p>
         </div>
       </div>
     </div>
@@ -260,40 +242,41 @@
   <section class="section" id="admin">
     <div class="container page-header">
       <div class="page-title-group">
-        <h1 class="page-title">📋 Painel Administrativo</h1>
-        <p class="page-subtitle">Gerencie todos os agendamentos cadastrados</p>
-      </div>
-      <div class="admin-actions-top">
-        <button class="btn btn-primary" onclick="showSection('agendar')">
-          <span>➕</span> Novo agendamento
-        </button>
+        <h1 class="page-title">⚙️ Painel Administrativo</h1>
+        <p class="page-subtitle">Gerencie as reservas e acompanhe a ocupação de horários</p>
       </div>
     </div>
 
-    <!-- Filtros e busca -->
+    <!-- Barra de Filtros e Pesquisa -->
     <div class="container">
       <div class="card filter-card">
         <div class="filter-row">
-          <div class="form-group filter-group">
-            <label for="filtroBusca" class="form-label">🔍 Buscar</label>
+          <div class="filter-col filter-grow">
+            <label for="filtroBusca" class="form-label">🔍 Buscar agendamento</label>
             <input
               type="text"
               id="filtroBusca"
               class="form-input"
-              placeholder="Nome, telefone ou serviço..."
+              placeholder="Nome do cliente ou serviço..."
               oninput="filtrarAgendamentos()"
             />
           </div>
-          <div class="form-group filter-group">
-            <label for="filtroStatus" class="form-label">📌 Status</label>
+          <div class="filter-col">
+            <label for="filtroSetor" class="form-label">🏢 Setor</label>
+            <select id="filtroSetor" class="form-input form-select" onchange="filtrarAgendamentos()">
+              <option value="">Todos os setores</option>
+            </select>
+          </div>
+          <div class="filter-col">
+            <label for="filtroStatus" class="form-label">⏳ Status</label>
             <select id="filtroStatus" class="form-input form-select" onchange="filtrarAgendamentos()">
               <option value="">Todos</option>
               <option value="pendente">Pendente</option>
               <option value="confirmado">Confirmado</option>
             </select>
           </div>
-          <div class="form-group filter-group">
-            <label for="filtroData" class="form-label">📆 Data</label>
+          <div class="filter-col">
+            <label for="filtroData" class="form-label">📅 Data específica</label>
             <input
               type="date"
               id="filtroData"
@@ -301,35 +284,36 @@
               onchange="filtrarAgendamentos()"
             />
           </div>
-          <button class="btn btn-outline filter-clear" onclick="limparFiltros()">
-            Limpar filtros
+        </div>
+        <div class="filter-actions-row">
+          <div class="admin-chips">
+            <span class="admin-chip" id="chipTotal">Total: 0</span>
+            <span class="admin-chip chip-pending" id="chipPendente">Pendentes: 0</span>
+            <span class="admin-chip chip-confirmed" id="chipConfirmado">Confirmados: 0</span>
+          </div>
+          <button class="btn btn-sm btn-outline" onclick="limparFiltros()">
+            <span>🔄</span> Limpar Filtros
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Resumo por status -->
+    <!-- Lista de Agendamentos Cadastrados -->
     <div class="container">
-      <div class="summary-row">
-        <div class="summary-chip chip-total" id="chipTotal">Total: 0</div>
-        <div class="summary-chip chip-pendente" id="chipPendente">Pendentes: 0</div>
-        <div class="summary-chip chip-confirmado" id="chipConfirmado">Confirmados: 0</div>
+      <div class="card admin-list-card">
+        <h2 class="card-title">Agendamentos Registrados</h2>
+        
+        <div id="listaAgendamentos">
+          <!-- Gerado dinamicamente via JavaScript -->
+        </div>
+
+        <!-- Estado vazio -->
+        <div class="empty-state" id="emptyAdmin" style="display:none;">
+          <div class="empty-icon">📂</div>
+          <p>Nenhum agendamento encontrado com os filtros aplicados.</p>
+        </div>
       </div>
     </div>
-
-    <!-- Lista de agendamentos -->
-    <div class="container" id="listaAgendamentos">
-      <!-- Gerado dinamicamente pelo JavaScript -->
-    </div>
-
-    <!-- Estado vazio -->
-    <div class="container empty-state" id="emptyAdmin" style="display:none;">
-      <div class="empty-icon">📭</div>
-      <h3>Nenhum agendamento encontrado</h3>
-      <p>Ainda não há agendamentos cadastrados ou nenhum resultado para o filtro aplicado.</p>
-      <button class="btn btn-primary" onclick="showSection('agendar')">Criar agendamento</button>
-    </div>
-
   </section>
 
   <!-- =============================================
@@ -339,57 +323,43 @@
     <div class="container page-header">
       <div class="page-title-group">
         <h1 class="page-title">🚫 Bloqueio de Datas</h1>
-        <p class="page-subtitle">Bloqueie datas para impedir novos agendamentos</p>
+        <p class="page-subtitle">Configure dias que não estarão disponíveis para novos agendamentos</p>
       </div>
     </div>
 
-    <div class="container bloqueio-layout">
-      <!-- Formulário de bloqueio -->
-      <div class="card bloqueio-form-card">
-        <h2 class="card-title">Bloquear nova data</h2>
-
+    <div class="container layout-bloqueios">
+      <!-- Formulário de Bloqueio -->
+      <div class="card form-bloqueio-card">
+        <h2 class="card-title">Bloquear Novo Dia</h2>
         <div class="form-group">
-          <label for="dataBloqueio" class="form-label">
-            📆 Selecione a data <span class="required">*</span>
-          </label>
-          <input
-            type="date"
-            id="dataBloqueio"
-            class="form-input"
-          />
+          <label for="dataBloqueio" class="form-label">Data a ser bloqueada <span class="required">*</span></label>
+          <input type="date" id="dataBloqueio" class="form-input" required />
         </div>
-
         <div class="form-group">
-          <label for="motivoBloqueio" class="form-label">📝 Motivo (opcional)</label>
+          <label for="motivoBloqueio" class="form-label">Motivo (Feriado, Recesso, Particular...)</label>
           <input
             type="text"
             id="motivoBloqueio"
             class="form-input"
-            placeholder="Ex: Feriado, manutenção, evento..."
+            placeholder="Ex: Confraternização da empresa"
           />
         </div>
-
         <button class="btn btn-danger btn-block" onclick="bloquearData()">
-          <span>🚫</span> Bloquear data
+          <span>🚫</span> Bloquear Data
         </button>
-
-        <div class="form-hint-box">
-          <strong>⚠️ Atenção:</strong> Datas bloqueadas não permitem novos agendamentos.
-          Agendamentos já realizados nessas datas não serão afetados.
-        </div>
       </div>
 
-      <!-- Lista de datas bloqueadas -->
-      <div class="bloqueio-list-area">
-        <h2 class="card-title">Datas bloqueadas</h2>
-
-        <div id="listaBloqueios">
-          <!-- Gerado dinamicamente -->
-        </div>
-
-        <div class="empty-state small-empty" id="emptyBloqueios" style="display:none;">
-          <div class="empty-icon">✅</div>
-          <p>Nenhuma data bloqueada no momento.</p>
+      <!-- Lista de Bloqueios Cadastrados -->
+      <div class="bloqueios-list-area">
+        <div class="card">
+          <h2 class="card-title">Datas Bloqueadas Ativas</h2>
+          <div id="listaBloqueios">
+            <!-- Gerado dinamicamente -->
+          </div>
+          <div class="empty-state small-empty" id="emptyBloqueios" style="display:none;">
+            <div class="empty-icon">✅</div>
+            <p>Nenhuma data bloqueada no momento.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -401,51 +371,12 @@
   <section class="section" id="servicos">
     <div class="container page-header">
       <div class="page-title-group">
-        <h1 class="page-title">💼 Gerenciar Serviços</h1>
-        <p class="page-subtitle">Configure e personalize os serviços oferecidos no agendamento</p>
+        <h1 class="page-title">💼 Gestão de Serviços</h1>
+        <p class="page-subtitle">Customize os setores e serviços oferecidos aos clientes no sistema</p>
       </div>
-    </div>
-
-    <!-- Presets Rápidos -->
-    <div class="container">
-      <div class="card preset-card-selection">
-        <h3 class="card-title">⚡ Presets de Serviços por Setor</h3>
-        <p class="preset-desc">Escolha uma área de atuação para carregar instantaneamente serviços pré-definidos:</p>
-        
-        <div class="presets-grid">
-          <div class="preset-box" onclick="carregarPreset('geral', 'sobrescrever')">
-            <span class="preset-icon">🏢</span>
-            <h4>Geral / Escritório</h4>
-          </div>
-          <div class="preset-box" onclick="carregarPreset('saude', 'sobrescrever')">
-            <span class="preset-icon">🏥</span>
-            <h4>Saúde &amp; Bem-estar</h4>
-          </div>
-          <div class="preset-box" onclick="carregarPreset('beleza', 'sobrescrever')">
-            <span class="preset-icon">💅</span>
-            <h4>Estética &amp; Beleza</h4>
-          </div>
-          <div class="preset-box" onclick="carregarPreset('educacao', 'sobrescrever')">
-            <span class="preset-icon">🎓</span>
-            <h4>Educação / Aulas</h4>
-          </div>
-          <div class="preset-box" onclick="carregarPreset('tecnologia', 'sobrescrever')">
-            <span class="preset-icon">🛠️</span>
-            <h4>TI &amp; Assistência</h4>
-          </div>
-        </div>
-
-        <div class="preset-actions-row">
-          <span class="preset-info-note">💡 Dica: Ao clicar, você sobrescreve os serviços existentes. Se quiser apenas adicionar sem apagar, use os botões abaixo:</span>
-          <div class="preset-append-buttons">
-            <button class="btn btn-sm btn-outline" onclick="carregarPreset('geral', 'adicionar')">+ Geral</button>
-            <button class="btn btn-sm btn-outline" onclick="carregarPreset('saude', 'adicionar')">+ Saúde</button>
-            <button class="btn btn-sm btn-outline" onclick="carregarPreset('beleza', 'adicionar')">+ Beleza</button>
-            <button class="btn btn-sm btn-outline" onclick="carregarPreset('educacao', 'adicionar')">+ Educação</button>
-            <button class="btn btn-sm btn-outline" onclick="carregarPreset('tecnologia', 'adicionar')">+ TI</button>
-          </div>
-        </div>
-      </div>
+      <button class="btn btn-sm btn-outline btn-danger" id="btnResetPresets" onclick="resetarPresetsFabrica()">
+        🔄 Restaurar Configurações Originais
+      </button>
     </div>
 
     <div class="container servico-layout">
@@ -455,6 +386,7 @@
 
         <input type="hidden" id="editandoServicoId" value="" />
 
+        <!-- Nome -->
         <div class="form-group">
           <label for="nomeServico" class="form-label">
             👤 Nome do serviço <span class="required">*</span>
@@ -468,19 +400,31 @@
           />
         </div>
 
+        <!-- Categoria/Setor -->
         <div class="form-group">
-          <label for="descricaoServico" class="form-label">📝 Descrição / Detalhes (opcional)</label>
-          <input
-            type="text"
-            id="descricaoServico"
-            class="form-input"
-            placeholder="Ex: Sessão individual com duração de 1 hora..."
-          />
+          <label for="categoriaServicoForm" class="form-label">
+            🏢 Categoria / Setor correspondente <span class="required">*</span>
+          </label>
+          <select id="categoriaServicoForm" class="form-input form-select" required>
+            <option value="">Selecione uma categoria...</option>
+          </select>
         </div>
 
+        <!-- Descrição -->
+        <div class="form-group">
+          <label for="descricaoServico" class="form-label">📝 Descrição / Detalhes (opcional)</label>
+          <textarea
+            id="descricaoServico"
+            class="form-input form-textarea"
+            placeholder="Ex: Sessão individual com duração aproximada de 1 hora..."
+            rows="3"
+          ></textarea>
+        </div>
+
+        <!-- Ações do form -->
         <div class="servico-form-actions">
           <button class="btn btn-primary btn-block" id="btnSalvarServico" onclick="salvarServico()">
-            <span>➕</span> Adicionar serviço
+            <span>➕</span> Cadastrar serviço
           </button>
           <button class="btn btn-outline btn-block" onclick="limparFormularioServico()">
             <span>🔄</span> Limpar / Novo
@@ -489,23 +433,22 @@
       </div>
 
       <!-- Lista de serviços cadastrados -->
-      <div class="servico-list-area">
-        <h2 class="card-title">Serviços Cadastrados</h2>
-
-        <div id="listaServicos">
+      <div class="servico-list-area card">
+        <h2 class="card-title">Serviços Cadastrados no Sistema</h2>
+        <div id="listaServicosAdmin">
           <!-- Gerado dinamicamente -->
         </div>
 
-        <div class="empty-state small-empty" id="emptyServicos" style="display:none;">
+        <div class="empty-state small-empty" id="emptyServicosAdmin" style="display:none;">
           <div class="empty-icon">📂</div>
-          <p>Nenhum serviço cadastrado no momento. Cadastre acima ou carregue um preset.</p>
+          <p>Nenhum serviço cadastrado. Utilize o formulário para adicionar ou restaure as configurações de fábrica.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- =============================================
-       MODAL DE EDIÇÃO DE AGENDAMENTO
+       MODAL DE EDIÇÃO DE AGENDAMENTO (ADMIN)
   ============================================== -->
   <div class="modal-overlay" id="modalOverlay" onclick="fecharModal()" style="display:none;">
     <div class="modal" id="modal" onclick="event.stopPropagation()">
@@ -514,66 +457,57 @@
         <button class="modal-close" onclick="fecharModal()">✕</button>
       </div>
       <div class="modal-body">
+        <input type="hidden" id="editId" />
 
+        <!-- Nome -->
         <div class="form-group">
-          <label for="editNome" class="form-label">👤 Nome completo</label>
-          <input type="text" id="editNome" class="form-input" />
+          <label for="editNome" class="form-label">👤 Nome do Cliente</label>
+          <input type="text" id="editNome" class="form-input" required />
         </div>
+
+        <!-- Telefone -->
         <div class="form-group">
           <label for="editTelefone" class="form-label">📞 Telefone</label>
           <input type="tel" id="editTelefone" class="form-input" oninput="mascaraTelefone(this)" maxlength="15" />
         </div>
+
+        <!-- Categoria/Setor -->
+        <div class="form-group">
+          <label for="editCategoria" class="form-label">🏢 Categoria/Setor</label>
+          <select id="editCategoria" class="form-input form-select" onchange="aoMudarCategoriaModal()">
+            <!-- Dinâmico -->
+          </select>
+        </div>
+
+        <!-- Serviço -->
         <div class="form-group">
           <label for="editServico" class="form-label">🛠️ Serviço</label>
           <select id="editServico" class="form-input form-select">
-            <option value="">Selecione o serviço...</option>
+            <!-- Dinâmico -->
           </select>
         </div>
+
+        <!-- Data -->
         <div class="form-group">
           <label for="editData" class="form-label">📆 Data</label>
           <input type="date" id="editData" class="form-input" onchange="carregarHorariosModal()" />
         </div>
+
+        <!-- Horário -->
         <div class="form-group">
           <label for="editHorario" class="form-label">🕐 Horário</label>
           <select id="editHorario" class="form-input form-select"></select>
         </div>
-        <input type="hidden" id="editId" />
-
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" onclick="salvarEdicao()">💾 Salvar alterações</button>
         <button class="btn btn-outline" onclick="fecharModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="salvarEdicao()">Salvar Alterações</button>
       </div>
     </div>
   </div>
 
-  <!-- =============================================
-       TOAST DE NOTIFICAÇÃO
-  ============================================== -->
+  <!-- Container de Toasts/Notificações -->
   <div class="toast-container" id="toastContainer"></div>
-
-  <!-- =============================================
-       SEÇÃO: ENGENHARIA DE PROMPT
-  ============================================== -->
-  <section class="prompt-engineering-section">
-    <div class="container">
-      <div class="card prompt-card">
-        <h2 class="card-title">🤖 Engenharia de Prompt</h2>
-        <p class="prompt-text">
-          Este projeto foi totalmente desenvolvido com auxílio de Inteligência Artificial por meio de prompts estruturados, evidenciando o potencial da colaboração humano-IA no desenvolvimento ágil de aplicações modernas.
-        </p>
-        <div class="prompt-box">
-          <div class="prompt-box-header">
-            <span>💬 Exemplo de Prompt Utilizado:</span>
-            <span class="prompt-badge">Instrução IA</span>
-          </div>
-          <blockquote class="prompt-quote">
-            “Crie uma aplicação web chamada EcoAgenda, um sistema de agendamento online sustentável. A aplicação deve permitir cadastrar horários, impedir conflitos de agendamento, bloquear datas e exibir um painel administrativo. Use HTML, CSS e JavaScript, com localStorage e design responsivo em tons de verde.”
-          </blockquote>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- =============================================
        FOOTER
@@ -581,11 +515,10 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <span class="logo-icon">🌿</span>
-        <span class="logo-text">EcoAgenda</span>
+        <span>🌿</span> EcoAgenda
       </div>
-      <p class="footer-tagline">Agendamento sustentável. Futuro verde. 🌍</p>
-      <p class="footer-note">Seus dados são armazenados localmente no seu navegador.</p>
+      <p class="footer-tagline">Agendamento sustentável. Futuro verde.</p>
+      <p class="footer-note">Aplicativo executado localmente. Reduzindo folhas físicas de agenda.</p>
     </div>
   </footer>
 
